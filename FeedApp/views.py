@@ -71,22 +71,22 @@ def new_post(request):
 def friendsfeed(request):
     comment_count_list = []
     like_count_list = []
-    friends = Profile.objects.filter(username=request.user).order_by('-friends')
+    friends = Profile.objects.filter(user=request.user).values('friends')
     posts = Post.objects.filter(username_in=friends).order_by('-date_posted')
     for p in posts:
         c_count = Comment.objects.filter(post=p).count()
         l_count = Like.objects.filter(post=p).count()
         comment_count_list.append(c_count)
         like_count_list.append(l_count)
-    zipped_list = zip(posts,comment_count_list,like_count_list)
+    zipped_list = zip(posts, comment_count_list, like_count_list)
 
-    if request.method == 'POST' and request.POST.get("like"):
-        post_to_like = request.POST.get("like")
+    if request.method == 'POST' and request.POST.get('like'):
+        post_to_like = request.POST.get('like')
         print(post_to_like)
         like_already_exists = like.objects.filter(post_id=post_to_like,username=request.user)
         if not like_already_exists.exists():
-            Like.objects.create(post_id=post_to_like,username=request.user)
-            return redirect("FeedApp:friendsfeed")
+            Like.objects.create(post_id=post_to_like, username=request.user)
+            return redirect('FeedApp:friendsfeed')
 
     context  ={'posts':posts, 'zipped_list':zipped_list}
     return render(request, 'FeedApp/myfeed.html', context)
@@ -96,7 +96,7 @@ def friendsfeed(request):
 def comments(request, post_id):
     if request.method == 'POST' and request.POST.get("btn1"):
         comment = request.POST.get("comment")
-        Comment.objects.create(post_id=post_id,username=request.user,text=comment,date_added=date.today())
+        Comment.objects.create(post_id=post_id, username=request.user, text=comment, date_added=date.today())
 
     comments = Comment.objects.filter(post=post_id)
     post = Post.objects.get(id=post_id)
@@ -122,11 +122,11 @@ def friends(request):
     request_received_profiles = Relationship.objects.filter(receiver=user_profile,status='sent')
 
     if not user_relationships.exists():
-        Relationship.objects.create(sender=user_profile,receiver=admin_profile,status='sent')
+        Relationship.objects.create(sender=user_profile, receiver=admin_profile, status='sent')
 
 
-    if request.method == 'POST' and request.POST.get("send_request"):
-        receivers = request.POST.getlist("send_requests")
+    if request.method == 'POST' and request.POST.get('send_request'):
+        receivers = request.POST.getlist('send_requests')
         print(receivers)
         for receiver in receivers:
             receiver_profile = Profile.objects.get(id=receiver)

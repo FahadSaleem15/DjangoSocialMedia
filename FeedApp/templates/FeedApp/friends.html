@@ -30,11 +30,11 @@
     </tr>
     {% for friend in user_friends_profiles %}
     <tr>
-        <td>{{friend}}</td>
-        <td>{{friend.first_name}}</td>
-        <td>{{friend.last_name}}</td>
-        <td>{{friend.email}}</td>
-        <td>{{friend.created|date:"M d Y"}}</td>
+        <td>{{ friend }}</td>
+        <td>{{ friend.first_name }}</td>
+        <td>{{ friend.last_name }}</td>
+        <td>{{ friend.email }}</td>
+        <td>{{ friend.created|date:"M d Y" }}</td>
     </tr>
     {% endfor %}
 </table>
@@ -52,13 +52,13 @@
         <th>Date Sent</th>
         <th>Status</th>
     </tr>
-    </tr>
-    {% for r in user_relationships %}
-    <td>{{r.receiver}}</td>
-    <td>{{r.receiver.first_name}}</td>
-    <td>{{r.receiver.last_name}}</td>
-    <td>{{r.created}}</td>
-    <td>{{r.status}}</td>
+    <tr>
+        {% for r in user_relationships %}
+        <td>{{r.receiver}}</td>
+        <td>{{r.receiver.first_name}}</td>
+        <td>{{r.receiver.last_name}}</td>
+        <td>{{r.created}}</td>
+        <td>{{r.status}}</td>
 
     </tr>
     {% endfor %}
@@ -108,15 +108,15 @@
         </tr>
         {% for rr in request_received_profiles %}
         <tr>
-            <td>{{rr.sender}}</td>
-            <td>{{rr.sender.first_name }}</td>
-            <td>{{rr.sender.last_name }}</td>
+            <td>{{ rr.sender }}</td>
+            <td>{{ rr.sender.first_name }}</td>
+            <td>{{ rr.sender.last_name }}</td>
             <td><input type="checkbox" name="receive_requests" value="{{rr.id}}"></td>
         </tr>
         {% endfor %}
     </table>
     <br><br>
-    <button name="submit" class="btn btn-outline-primary" style="float: left;">Approve Request</button>
+    <button name="submit" class="btn btn-outline-primary">Approve Request</button>
     <br><br><br><br>
 </form>
 
